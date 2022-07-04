@@ -25,16 +25,17 @@ priority_queue<edge, vector<edge>, greater<edge> > pq;
 //以下orz代表不连通
 
 int main(){
-    int n,m;
+    int n,m;//点数，边数
     scanf("%d%d",&n,&m);
     int ans = 0;
     int cnt = 1;
 
     for(int i=1;i<=m;i++){
-        int a,b,c;
+        int a,b,c;//起点，终点，边权
         scanf("%d%d%d",&a,&b,&c);
         graph[a].push_back(edge(b,c));
         graph[b].push_back(edge(a,c));
+        //无向图
     }
 
     for(int i=0;i<graph[1].size();i++){

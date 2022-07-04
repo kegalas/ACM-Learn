@@ -39,6 +39,7 @@ int n;
 Point po[MAXN];
 
 vector<Point> convexHull(){
+	//返回凸包上的点
     vector<Point> ans;
     int k = 0;
     for(int i=0;i<n;i++){
@@ -83,7 +84,6 @@ void rc(vector<Point> ans){
     int si=i,sj=j;
     while(i!=sj||j!=si){
         res = max(res,dist(ans[i],ans[j]));
-        //cout<<i<<" "<<j<<endl;
         if((ans[(i+1)%tn]-ans[i]).det(ans[(j+1)%tn]-ans[j])<0){
             i = (i+1)%tn;
         }else{
@@ -92,17 +92,16 @@ void rc(vector<Point> ans){
         
         cnt++;
     }
+    //返回凸包最远点对的距离的平方
     cout<<res<<endl;
 }
-
-
-
 
 int main(){
     cin>>n;
     vector<Point> qs;
     for(int i=0;i<n;i++){
         cin>>po[i].x>>po[i].y;
+        //按横纵坐标输入点对
     }
     sort(po,po+n,cmp);
     qs = convexHull();

@@ -44,6 +44,7 @@ void update(int l, int r, int s, int t, int p, ll c){//c表示加减的数值
 }
 
 ll query(int l, int r, int s, int t, int p){
+	//查询[l,r]的和
     if(l<=s&&t<=r){
         return st[p];
     }
@@ -64,6 +65,7 @@ ll query(int l, int r, int s, int t, int p){
 int main(){
     int n,m;
     scanf("%d%d",&n,&m);
+    //数组长度，查询次数
     for(int i=1;i<=n;i++){
         scanf("%lld",&arr[i]);   
     }
@@ -75,11 +77,13 @@ int main(){
         if(ope==1){
             int x,y,z;
             scanf("%d%d%d",&x,&y,&z);
+            //[x,y]加上z
             update(x, y, 1, n, 1, z);
         }
         else{
             int x,y;
             scanf("%d%d",&x,&y);
+            //查询[x,y]的和
             cout<<query(x, y, 1, n, 1)<<endl;
         }
     }

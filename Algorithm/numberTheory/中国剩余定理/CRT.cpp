@@ -19,15 +19,17 @@ long long exgcd(ll a, ll b, ll &x, ll &y){
     x = y;
     y = tmp - (a/b)*y;
     return d;
-
 }
 
 int main(){
     int k;
     cin>>k;
+    //共有k个方程
     for(int i=1;i<=k;i++){
         cin>>a[i]>>r[i];
+		//x≡ai(mod ri)
     }
+    
     ll n=1,ans=0;
     for(int i=1;i<=k;i++){
         n = n * r[i];
@@ -38,6 +40,8 @@ int main(){
         exgcd(m,r[i],x,y);
         ans = (ans+a[i]*m*x%n)%n;
     }
+    
     cout<<ans<<endl;
+    //输出x的值
     return 0;
 }

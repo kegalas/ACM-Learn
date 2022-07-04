@@ -13,11 +13,8 @@ struct edge{
 };
 
 int n,m,s;
-
 int dis[MAXN];
-
 vector<edge> graph[MAXN];
-
 
 int main(){
     
@@ -29,6 +26,7 @@ int main(){
         edge tmp;
         int a,b,c;
         cin>>a>>b>>c;
+        //起点，终点，边权
         tmp.v=b;
         tmp.w=c;
         graph[a].push_back(tmp);
@@ -65,8 +63,7 @@ int main(){
         //}
         
     }
-
-
+    
     return 0;
 }
 

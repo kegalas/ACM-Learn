@@ -39,6 +39,7 @@ bool cmp(Point& a, Point& b){
 }
 
 vector<Point> convexHull(){
+	//返回凸包上的点
     int k = 0;
     vector<Point> qs;
     for(int i=0;i<n;i++){
@@ -66,6 +67,7 @@ int main(){
     cin>>n;
     for(int i=0;i<n;i++){
         cin>>po[i].x>>po[i].y;
+        //输入点的横纵坐标
     }
 
     sort(po,po+n,cmp);

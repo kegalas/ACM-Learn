@@ -5,8 +5,6 @@
 #define MAXN 500005
 #define MAXINT 0x7fffffff
 
-
-
 using namespace std;
 
 struct edge{
@@ -28,21 +26,13 @@ bool tag[MAXN];
 
 priority_queue<node, vector<node>, greater<node> > pq;
 
-
-
-
 int main(){
-
-    //freopen("in.in","r",stdin);
-    //freopen("out.out","w",stdout);
-
     scanf("%d%d%d",&n,&m,&s);
-
-    
 
     for(int i=1;i<=m;i++){
         int a,b,c;
         scanf("%d%d%d",&a,&b,&c);
+        //起点，终点，边权
         edge t;
         t.v=b;
         t.w=c;
@@ -51,6 +41,7 @@ int main(){
 
     for(int i=1;i<=n;i++){
         dis[i] = MAXINT;
+        //初始化为无限远
     }
 
     dis[s]=0;
@@ -79,9 +70,6 @@ int main(){
     for(int i=1;i<=n;i++){
         printf("%d ",dis[i]);
     }
-    
-
-
 
     return 0;
 

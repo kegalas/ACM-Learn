@@ -22,5 +22,6 @@ int main(){
     cin>>a>>b;
     z = exgcd(a,b,x,y);
     cout<<x<<" "<<y<<" "<<z<<endl;
+    //x,y的意义见开头，z即是最大公约数
     return 0;
 }

@@ -1,5 +1,7 @@
+//ax≡c (mod b)求解x
+//和ax+by=c等价
 #include <iostream>
-//ax≡b (mod n)求解x
+
 using namespace std;
 
 int exgcd(int a, int b, int &x, int &y){
@@ -24,8 +26,6 @@ int linearEquation(int a, int b, int c, int &x, int &y){
     return d;
 }
 
-
-
 int main(){
     int a,b,c,x,y;
 
@@ -33,6 +33,7 @@ int main(){
     c=1;
 
     int d = linearEquation(a,b,c,x,y);
+    //d是a,b的最大公约数
 
     if(d==-1){
         cout<<"None"<<endl;
@@ -44,9 +45,6 @@ int main(){
         x = (x%t+t)%t;
         cout<<x<<endl;
     }
-
-
-
 
     return 0;
 }

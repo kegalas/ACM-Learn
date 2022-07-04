@@ -1,4 +1,4 @@
-//kmp
+//kmp,luogu3375
 #include <iostream>
 #include <cstdio>
 #include <string>
@@ -33,10 +33,9 @@ int getNext(){
     return 0;
 }
 
-
-
 int main(){
     cin>>s1>>s2;
+    //给定两个字符串
     getNext();
 
     int pos=0,tar=0;
@@ -56,6 +55,7 @@ int main(){
 
         if (pos==s2.length()){
             cout<<tar-pos+1<<endl;
+            //输出s2在s1中出现的位置
             pos = nxt[pos-1];
         }
         
@@ -63,14 +63,10 @@ int main(){
 
     for(int i=0;i<s2.length();i++){
         cout<<nxt[i]<<" ";
+        //表示s2​的长度为i的前缀的最长border长度。
     }
 
     cout<<endl;
-    
-
-    
-
-
 
     return 0;
 }

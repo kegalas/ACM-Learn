@@ -31,6 +31,7 @@ long long query(int p){
 
 int main(){
     scanf("%d%d",&n,&m);
+    //数组长度，查询数
     for(int i=1;i<=n;i++){
         scanf("%d",&arr[i]);
         update(i,arr[i]);
@@ -43,10 +44,12 @@ int main(){
         scanf("%d",&x);
         if(op==1){
             scanf("%d",&k);
+            //将单点修改为k
             update(x,k);
         }
         else{
             scanf("%d",&y);
+            //输出[x,y]的数组和
             cout<<query(y)-query(x-1)<<endl;
         }
     }

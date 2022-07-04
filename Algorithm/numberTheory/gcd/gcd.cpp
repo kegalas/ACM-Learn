@@ -21,6 +21,7 @@ int main(){
     }
 
     cout<<ans<<endl;
+    //返回最大公约数
 
     return 0;
 }

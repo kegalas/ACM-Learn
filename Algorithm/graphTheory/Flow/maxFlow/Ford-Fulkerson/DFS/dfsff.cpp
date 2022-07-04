@@ -1,3 +1,5 @@
+//luogu P3376
+//超时
 #include <iostream>
 #include <vector>
 #include <cstring>
@@ -10,8 +12,6 @@ typedef unsigned long long ull;
 
 const ll INF = 0xffffffff;
 const int MAXM = 100005;
-
-
 
 struct Edge{
     int to;
@@ -55,18 +55,22 @@ ll max_flow(int s, int t){
 int main(){
     int n,m;
     cin>>n>>m;
+    //点数，边数
     int s,t;
     cin>>s>>t;
+    //源点，汇点
     for(int i=1;i<=m;i++){
         int a,b;
         ll c;
         scanf("%d%d%ld",&a,&b,&c);
+        //起点，终点，边容量
         //cin>>a>>b>>c;
         G[a].push_back(Edge(b,c,G[b].size()));//这里第三个参数实际上是反向边的编号
         G[b].push_back(Edge(a,0,G[a].size()-1));
     }
     
     ll ans = max_flow(s,t);
+    //得到最大流
     printf("%ld",ans);
     //cout<<ans<<endl;
     return 0;

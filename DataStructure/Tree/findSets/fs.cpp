@@ -20,11 +20,13 @@ void unionSet(int x, int y){
 int main(){
     int n;
     cin>>n;
+    //点数
     for(int i=1;i<=n;i++){
         find_sets[i]=i;
     }
     int m;
     cin>>m;
+    //边数
     for(int i=1;i<=m;i++){
         int a,b;
         cin>>a>>b;

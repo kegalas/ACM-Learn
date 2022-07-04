@@ -5,13 +5,12 @@
 #define MAXN 5005
 #define MAXINT 0x3fffffff //不能设置为int的最大值，否则后面加法可能导致溢出
 
-
 using namespace std;
 
 int graph[MAXN][MAXN];
 
 int main(){
-    int n,m;
+    int n,m;//点数，边数
     cin>>n>>m;
     for(int i = 1;i<=n;i++){
         for(int j = 1;j<=n;j++){
@@ -23,7 +22,7 @@ int main(){
     }
     for(int i=1;i<=m;i++){
         int a,b,v;
-        cin>>a>>b>>v;
+        cin>>a>>b>>v;//起点，终点，边权
         graph[a][b] = v;
     }
 

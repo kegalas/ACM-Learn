@@ -2,14 +2,11 @@
 #include <algorithm>
 #define MAXN 200005
 
-
 using namespace std;
 
-
-int u[MAXN],v[MAXN],w[MAXN];//一条边的两个点和边权值
-int r[MAXN];//临时边序号，简介排序
+int u[MAXN],v[MAXN],w[MAXN];
+int r[MAXN];//临时边序号，间接排序
 int find_sets[MAXN];//并查集
-
 
 int cmp(const int i, const int j){return w[i]<w[j];}
 
@@ -21,6 +18,7 @@ int main(){
     cin>>n>>m;
     for(int i=1;i<=m;i++){
         cin>>u[i]>>v[i]>>w[i];
+        //起点，终点，边权
     }
 
     for(int i = 1;i<=n;i++){
@@ -57,7 +55,5 @@ int main(){
 
     cout<<ans<<endl;
 
-
     return 0;
 }
-

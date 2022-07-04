@@ -16,7 +16,6 @@ struct point
     vector<graph> graph1;
 }point1[100];
 
-
 int main(){
     int n,m;
     cin>>n>>m;
@@ -27,13 +26,14 @@ int main(){
     
     for (int i=1;i<=m;i++){
         int a,b,value;
-        cin>>a>>b;//本次是无权图
+        cin>>a>>b;//起点，终点；本次是无权图
         graph tmp;
         tmp.to=b;
         tmp.value = 0;
         point1[a].graph1.push_back(tmp);
         point1[b].in_num++;
     }
+    
     queue<int> que;
     vector<int> ans;
 
@@ -67,9 +67,6 @@ int main(){
     else{
         cout<<"none";
     }
-    
-    
-    
 
     return 0;
 }

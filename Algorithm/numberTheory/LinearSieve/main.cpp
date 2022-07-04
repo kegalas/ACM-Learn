@@ -10,6 +10,7 @@ int main(){
     int n, prime[MAXN], cnt=0;
     bool is_not_prime[MAXN];
     cin>>n;
+    //2~n中有多少个素数
     memset(is_not_prime, 0, sizeof(prime));
 
     for (int i = 2;i<=n;i++){
@@ -22,6 +23,7 @@ int main(){
 
     for(int i = 1;i<=cnt;i++){
         cout<<prime[i]<<" ";
+        //输出素数
     }
     return 0;
 }

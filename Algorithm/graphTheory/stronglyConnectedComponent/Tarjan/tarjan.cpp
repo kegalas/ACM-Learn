@@ -41,9 +41,11 @@ void tarjan(int u){
 int main(){
     int n,m;
     cin>>n>>m;
+    //点数，边数
     for(int i=1;i<=m;i++){
         int a,b;
         cin>>a>>b;
+        //起点，终点
         edges[a].push_back(b);
     }
     for(int i=1;i<=n;i++){
