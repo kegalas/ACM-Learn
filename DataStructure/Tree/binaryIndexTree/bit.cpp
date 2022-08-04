@@ -44,7 +44,7 @@ int main(){
         scanf("%d",&x);
         if(op==1){
             scanf("%d",&k);
-            //将单点修改为k
+            //将单点增加k，如果想要改成修改，则可以update(x,-arr[x]+k)
             update(x,k);
         }
         else{
