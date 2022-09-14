@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <bitset>
+#include <deque>
 
 #define LL long long
 #define ULL unsigned long long
