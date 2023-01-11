@@ -1,87 +1,66 @@
-//luogu P3376
-//超时
+//luogu 3376
+//复杂度O(ef)，边数乘以最大流，所以在luogu上这题超时
 #include <iostream>
-#include <vector>
 #include <cstring>
-#include <cstdio>
+#include <vector>
 
-using namespace std;
+typedef long long LL;
 
-typedef long long ll;
-typedef unsigned long long ull;
-
-const ll INF = 0xffffffff;
-const int MAXM = 100005;
+const int MAXN = 205;
+const LL INF = 0xffffffff;
 
 struct Edge{
-    int to;
-    int rev;
-    ll cap;
-    Edge()=default;
-    Edge(int to, ll cap, int rev):to(to),cap(cap),rev(rev){}
-
+    int v;LL w;//指向的点，容量
+    Edge(int v_, LL w_):v(v_),w(w_){}
 };
 
-vector<Edge> G[MAXM];
-bool used[MAXM]; 
+std::vector<Edge> edges;
+std::vector<std::vector<int> > graph(MAXN);//vector版的链式前向星
+bool vis[MAXN];
 
-ll dfs(int v, int t, ll f){
-    if(v==t) return f;
-    used[v] = true;
-    for(int i=0;i<G[v].size();i++){
-        Edge& e=G[v][i];
-        if(!used[e.to]&&e.cap>0){
-            ll d = dfs(e.to, t, min(f,e.cap));
-            if(d>0){
-                e.cap-=d;
-                G[e.to][e.rev].cap+=d;
-                return d;
-            }
+LL DFS(int const & p, LL const & flow, int const & s, int const & t){
+    if(p==t) return flow;
+    vis[p] = true;
+
+    int size = graph[p].size();
+    for(int i=0 ; i<size ; i++){
+        int eg = graph[p][i];
+        int to = edges[eg].v;
+        LL vol = edges[eg].w, c;
+
+        if(vol>0 && !vis[to] && (c=DFS(to,std::min(flow,vol),s,t))!=-1){
+            edges[eg].w -= c;
+            edges[eg^1].w += c;
+            return c;
         }
     }
-    return 0;
+
+    return -1;
 }
 
-ll max_flow(int s, int t){
-    ll flow = 0;
-    for(;;){
-        memset(used,0,sizeof(used));
-        ll f = dfs(s,t,INF);
-        if(f==0) return flow;
-        flow+=f;
+LL FF(int const & p, LL const & flow, int const & s, int const & t){
+    LL ans = 0, c;
+    while((c=DFS(p,flow,s,t))!=-1){
+        std::memset(vis,0,sizeof(vis));
+        ans += c;
     }
+    return ans;
 }
 
 int main(){
-    int n,m;
-    cin>>n>>m;
-    //点数，边数
-    int s,t;
-    cin>>s>>t;
-    //源点，汇点
+    int n,m,s,t;//点数，边数，源点，汇点
+    std::cin>>n>>m>>s>>t;
+
     for(int i=1;i<=m;i++){
-        int a,b;
-        ll c;
-        scanf("%d%d%ld",&a,&b,&c);
-        //起点，终点，边容量
-        //cin>>a>>b>>c;
-        G[a].push_back(Edge(b,c,G[b].size()));//这里第三个参数实际上是反向边的编号
-        G[b].push_back(Edge(a,0,G[a].size()-1));
+        int u,v;LL w;
+        std::cin>>u>>v>>w;//起点，终点，边容量
+        graph[u].push_back(edges.size());
+        edges.push_back(Edge(v,w));
+        graph[v].push_back(edges.size());
+        edges.push_back(Edge(u,0));
     }
-    
-    ll ans = max_flow(s,t);
-    //得到最大流
-    printf("%ld",ans);
-    //cout<<ans<<endl;
+
+    std::cout<<FF(s,INF,s,t)<<"\n";//输出最大流
+
     return 0;
 }
-
-/*
-4 5 4 3
-4 2 30
-4 3 20
-2 3 20
-2 1 30
-1 3 40
-*/
-

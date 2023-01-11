@@ -1,92 +1,78 @@
+//luogu P3376
+//EK算法的时间复杂度为O(nm^2)，这题不会超时
 #include <iostream>
+#include <cstring>
 #include <vector>
 #include <queue>
-#include <cstring>
 
-using namespace std;
-
-typedef long long ll;
+typedef long long LL;
 
 const int MAXN = 205;
-const ll INF = 1LL<<35;
+const LL INF = 0xffffffff;
 
 struct Edge{
-    int from, to;
-    ll cap,flow;
-    Edge(int u, int v, ll c, ll f):from(u),to(v),cap(c),flow(f){}
+    int v;LL w;//指向的点，容量
+    Edge(int v_, LL w_):v(v_),w(w_){}
 };
 
-struct EdmondKarp{
-    int n,m;
-    vector<Edge> edges;  
-    vector<int> G[MAXN]; //邻接表
-    ll a[MAXN];
-    ll p[MAXN];
+std::vector<Edge> edges;
+std::vector<std::vector<int> > graph(MAXN);//vector版的链式前向星
+int last[MAXN];
+LL flow[MAXN];
 
-    void init(int n){
-        for(int i=0;i<n;i++){
-            G[i].clear();
-        }
-        edges.clear();
-    }
+bool BFS(int const & s, int const & t){
+    std::memset(last,-1,sizeof(last));
+    std::queue<int> qu;
+    qu.push(s);
+    flow[s] = INF;
+    while(!qu.empty()){
+        int p = qu.front();
+        qu.pop();
+        if(p == t) break;
 
-    void AddEdge(int from, int to, ll cap){
-        edges.push_back(Edge(from, to, cap, 0));
-        edges.push_back(Edge(to, from, 0, 0));
-        m = edges.size();
-        G[from].push_back(m-2);
-        G[to].push_back(m-1);
-    }
-
-    int Maxflow(int s, int t){
-        ll flow = 0;
-        for(;;){
-            memset(a, 0 ,sizeof(a));
-            queue<ll> Q;
-            Q.push(s);
-            a[s] = INF;
-            while(!Q.empty()){
-                ll x=Q.front();
-                Q.pop();
-                for(int i=0;i<G[x].size();i++){
-                    Edge& e = edges[G[x][i]];
-                    if(!a[e.to]&&e.cap>e.flow){
-                        p[e.to] = G[x][i];
-                        a[e.to] = min(a[x], e.cap-e.flow);
-                        Q.push(e.to);
-                    }
-                }
-                if(a[t]) break;
+        int size = graph[p].size();
+        for(int i=0;i<size;i++){
+            int eg = graph[p][i];
+            int to = edges[eg].v;
+            LL vol = edges[eg].w;
+            if(vol>0 && last[to] == -1){
+                last[to] = eg;
+                flow[to] = std::min(flow[p], vol);
+                qu.push(to);
             }
-            if(!a[t]) break;
-            for(int u=t;u!=s;u=edges[p[u]].from){
-                edges[p[u]].flow+=a[t];
-                edges[p[u]^1].flow -= a[t];
-            }
-            flow += a[t];
         }
-        return flow;
     }
-};
+    return last[t] != -1;
+}
 
+LL EK(int const & s, int const & t){
+    LL ans = 0;
+
+    while(BFS(s,t)){
+        ans += flow[t];
+        for(int i=t;i!=s;i=edges[last[i]^1].v){
+            edges[last[i]].w -= flow[t];
+            edges[last[i]^1].w += flow[t];
+        }
+    }
+
+    return ans;
+}
 
 int main(){
-    EdmondKarp EK;
-    cin>>EK.n;
-    //点数
-    int s,t;
-    int m;
-    cin>>m>>s>>t;
-    //边数，源点，汇点
+    int n,m,s,t;//点数，边数，源点，汇点
+    std::cin>>n>>m>>s>>t;
+
     for(int i=1;i<=m;i++){
-        int tmp1,tmp2,tmp3;
-        cin>>tmp1>>tmp2>>tmp3;
-        //起点，终点，边容量
-        EK.AddEdge(tmp1,tmp2,tmp3);
+        int u,v;LL w;
+        std::cin>>u>>v>>w;
+        graph[u].push_back(edges.size());
+        edges.push_back(Edge(v,w));
+        graph[v].push_back(edges.size());
+        edges.push_back(Edge(u,0));
     }
 
-    cout<<EK.Maxflow(s,t)<<endl;
+    std::cout<<EK(s,t)<<"\n";
 
     return 0;
 }
-
