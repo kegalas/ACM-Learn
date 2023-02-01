@@ -1,38 +1,30 @@
+//luogu P1616
 #include <iostream>
 #include <cmath>
 
-#define MAXN 5005
-
-
+int const MAXN = 10007;
+int const MAXW = 10000007;
+typedef long long LL;
 
 using namespace std;
 
-int dp[MAXN][MAXN];
-int w[MAXN],v[MAXN];
-
+LL dp[MAXW];
+int w[MAXN];
+int v[MAXN];
 
 int main(){
-	int n,W;
-	cin>>n>>W;
-	
-	for(int i=1;i<=n;i++){
-		cin>>w[i]>>v[i];
-	}
-	
-	for(int i=0;i<n;i++){
-		for(int j=0;j<=W;j++){
-			if(j<w[i+1]) dp[i+1][j] = dp[i][j];
-			else{
-				dp[i+1][j] = max(dp[i][j], dp[i+1][j-w[i+1]]+v[i+1]);
-			}
-		}
-	}
-	cout<<dp[n][W]<<endl;
-	
-	
-	
-	
+    int n,W;//物品数，背包大小
+    cin>>W>>n;
+    for(int i=1;i<=n;i++){
+        cin>>w[i]>>v[i];//物品体积，物品价值
+    }
+    for(int i=1;i<=n;i++){
+        for(int j=w[i];j<=W;j++){
+			dp[j] = std::max(dp[j],dp[j-w[i]]+v[i]);
+        }
+    }
+    cout<<dp[W]<<endl;
     return 0;
-}
 
+}
 
