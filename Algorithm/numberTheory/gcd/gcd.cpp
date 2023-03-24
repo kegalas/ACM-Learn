@@ -1,27 +1,12 @@
 #include <iostream>
 
-using namespace std;
+inline int gcd(int a,int b){
+    return b==0 ? a : gcd(b, a%b);
+}
 
 int main(){
-    long long a,b;
-    cin>>a>>b;
-    if(a<b){
-        a=a+b;
-        b=a-b;
-        a=a-b;
-    }
-
-    long long ans = b;
-
-    while((a%b)!=0){
-        long long tmp = a%b;
-        a = b;
-        b = tmp;
-        ans = b;
-    }
-
-    cout<<ans<<endl;
-    //返回最大公约数
-
+    int a,b;
+    std::cin>>a>>b;
+    std::cout<<gcd(a,b);
     return 0;
 }

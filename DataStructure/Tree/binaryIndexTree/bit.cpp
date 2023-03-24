@@ -9,19 +9,17 @@ using namespace std;
 int arr[MAXN];
 int bit[MAXN];
 
-int n,m;
-
 inline int lowbit(int n){
     return n&(-n);
 }
 
-void update(int p, int k){
+void update(int p, int k, int n){
     for(;p<=n;p+=lowbit(p)){
         bit[p]+=k;
     }
 }
 
-long long query(int p){
+int query(int p){
     int ans=0;
     for(;p;p-=lowbit(p)){
         ans+=bit[p];
@@ -30,11 +28,12 @@ long long query(int p){
 }
 
 int main(){
+	int n,m;
     scanf("%d%d",&n,&m);
     //数组长度，查询数
     for(int i=1;i<=n;i++){
         scanf("%d",&arr[i]);
-        update(i,arr[i]);
+        update(i,arr[i],n);
     }
 
     for(int i=1;i<=m;i++){
@@ -45,7 +44,7 @@ int main(){
         if(op==1){
             scanf("%d",&k);
             //将单点增加k，如果想要改成修改，则可以update(x,-arr[x]+k)
-            update(x,k);
+            update(x,k,n);
         }
         else{
             scanf("%d",&y);

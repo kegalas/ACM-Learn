@@ -7,7 +7,6 @@
 const int MAXN = 500005;
 
 LL arr[MAXN];
-LL n;
 
 struct Par{
     LL value,id;
@@ -24,7 +23,7 @@ inline LL lowbit(LL n){
     return n&(-n);
 }
 
-void update(LL p, LL k){
+void update(LL p, LL k, LL n){
     for(;p<=n;p+=lowbit(p)){
         bit[p]+=k;
     }
@@ -39,6 +38,7 @@ long long query(LL p){
 }
 
 int main(){
+    LL n;
     std::cin>>n;
 
     for(int i=1;i<=n;i++){
@@ -56,7 +56,7 @@ int main(){
 
     for(int i=1;i<=n;i++){
         ans += query(arr[i]);
-        update(arr[i],1);
+        update(arr[i],1,n);
     }
 
     ans = n*(n-1)/2-ans;//本来统计的是等于或顺序对，现在反过来计算逆序对
