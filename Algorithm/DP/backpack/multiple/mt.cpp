@@ -1,3 +1,4 @@
+//复杂度 Wsum(logk_i) 
 //luogu P1776
 #include <iostream>
 #include <cmath>

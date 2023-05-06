@@ -1,3 +1,4 @@
+//复杂度 初始化为nlogn 后续查询为O(1)
 #include <iostream>
 
 #define LL long long

@@ -1,3 +1,4 @@
+//复杂度 logn
 //求解ax+by=gcd(a,b)的一组解
 //扩展欧几里得
 #include <iostream>

@@ -1,3 +1,4 @@
+//复杂度 单次查询 logn 预处理 nlogn
 //luogu P3379
 #include <iostream>
 #include <vector>

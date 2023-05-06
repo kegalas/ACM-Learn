@@ -1,3 +1,4 @@
+//复杂度 logn
 //ax≡c (mod b)求解x
 //和ax+by=c等价
 #include <iostream>

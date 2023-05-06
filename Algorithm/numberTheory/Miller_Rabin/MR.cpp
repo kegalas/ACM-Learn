@@ -1,3 +1,4 @@
+//对数 n 进行 k 轮测试的时间复杂度是 klog^3(n)
 //miller-rabin
 #include <iostream>
 #include <ctime>

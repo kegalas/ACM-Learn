@@ -1,4 +1,5 @@
 //归并排序
+//复杂度nlogn
 #include <stdio.h>
 
 void merge(long *num,long *tmp, int left, int mid_index ,int right){

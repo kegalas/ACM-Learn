@@ -1,3 +1,4 @@
+//复杂度 nlogn
 //Luogu P1908
 #include <iostream>
 #include <algorithm>

@@ -1,3 +1,4 @@
+//复杂度logn
 //快速幂
 #include <iostream>
 

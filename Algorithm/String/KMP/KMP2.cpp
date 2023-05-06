@@ -1,3 +1,5 @@
+//复杂度n
+//kmp,luogu3375
 #include <iostream>
 #include <vector>
 #include <string>

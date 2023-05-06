@@ -1,3 +1,4 @@
+//复杂度 很小
 //并查集
 
 #include <iostream>

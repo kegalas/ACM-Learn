@@ -1,3 +1,4 @@
+//复杂度 n+m
 //tarjan求割边
 #include <iostream>
 #include <vector>

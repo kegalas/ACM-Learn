@@ -1,3 +1,4 @@
+//复杂度 单次查询 logn 单次修改 logn
 //luogu 3372
 #include <iostream>
 #include <cstdio>

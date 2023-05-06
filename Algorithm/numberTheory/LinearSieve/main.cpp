@@ -1,3 +1,4 @@
+//复杂度 n
 //欧拉筛
 #include <iostream>
 #include <cstring>

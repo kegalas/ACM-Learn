@@ -1,3 +1,4 @@
+//复杂度nlogn
 //Luogu P1257
 #include <iostream>
 #include <algorithm>

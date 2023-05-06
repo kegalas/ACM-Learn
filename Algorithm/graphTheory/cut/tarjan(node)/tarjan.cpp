@@ -1,3 +1,4 @@
+//复杂度 n+m
 //tarjan求割点,luogu P3388
 #include <iostream>
 #include <vector>

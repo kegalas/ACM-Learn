@@ -13,6 +13,8 @@
 #include <bitset>
 #include <deque>
 #include <regex>
+#include <unordered_map>
+#include <unordered_set>
 
 #define debug(a) std::cout<<#a<<"="<<a<<std::endl
 #define lth(i,x,y) for(int i=x;i<=y;i++)

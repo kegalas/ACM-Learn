@@ -1,3 +1,4 @@
+//复杂度 文本串长度+模板串长度之和
 //AC自动机，luogu P3808
 
 #include <iostream>

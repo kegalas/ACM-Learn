@@ -1,3 +1,4 @@
+//复杂度 logn
 #include <iostream>
 
 inline int gcd(int a,int b){

@@ -1,3 +1,4 @@
+//复杂度 nW
 //luogu P1048
 #include <iostream>
 #include <cmath>

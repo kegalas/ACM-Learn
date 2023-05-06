@@ -1,3 +1,4 @@
+//复杂度nlogn
 //离散化 例如将1,500,40,1000保持相对大小不变，离散化为1,3,2,4
 #include <iostream>
 #include <vector>

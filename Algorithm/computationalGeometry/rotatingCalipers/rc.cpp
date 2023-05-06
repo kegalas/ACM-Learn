@@ -1,3 +1,4 @@
+//复杂度 nlogn，其中求凸包nlogn，旋转卡壳本身为n
 //Luogu P1452
 //旋转卡壳和凸包
 #include <iostream>
