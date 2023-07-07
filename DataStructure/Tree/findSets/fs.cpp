@@ -1,50 +1,74 @@
 //复杂度 很小
-//并查集
+//并查集 Luogu3367
 
 #include <iostream>
-using namespace std;
 
-const int MAXN = 1005;
+const int MAXN = 10005;
 
-int find_sets[MAXN];
-
-int findf(int x){
-    return find_sets[x]==x ? x : find_sets[x] = findf(find_sets[x]);
-}
-
-void unionSet(int x, int y){
-    x = findf(x);
-    y = findf(y);
-    find_sets[x] = y;
-}
+class DSU{
+public:
+    int fa[MAXN], rk[MAXN];
+    
+    void init(int n){
+        for(int i=1;i<=n;i++) fa[i] = i, rk[i] = 1;
+    }
+    
+    int find(int x){
+        //没有路径压缩的find，在需要删除操作时，不能使用路径压缩，只能按秩合并保证复杂度
+        return fa[x]==x ? x : find(fa[x]);
+    }
+    
+    int findc(int x){
+        //带路径压缩的find
+        return fa[x]==x ? x : (fa[x] = findc(fa[x]));
+    }
+    
+    void merge(int x, int y){
+        //按秩合并，如果不需要则直接 fa[find(x)] = find(y);
+        x = find(x), y = find(y);
+        if(x==y) return;
+        if(rk[x]>rk[y]) std::swap(x,y);
+        fa[x] = y;
+        if(rk[x]==rk[y]) rk[y]++;
+    }
+    
+    void mergec(int x, int y){
+        //按秩合并+路径压缩，如果不需要则直接 fa[findc(x)] = findc(y);
+        x = findc(x), y = findc(y);
+        if(x==y) return;
+        if(rk[x]>rk[y]) std::swap(x,y);
+        fa[y] = x;
+        if(rk[x]==rk[y]) rk[y]++;
+    }
+    
+    void erase(int x){
+        --rk[find(x)];
+        fa[x] = x;
+    }
+};
 
 int main(){
-    int n;
-    cin>>n;
-    //点数
-    for(int i=1;i<=n;i++){
-        find_sets[i]=i;
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(0);
+    
+    int n,m;
+    std::cin>>n>>m;
+    
+    DSU dsu;
+    dsu.init(n);
+    
+    while(m--){
+        int ope,x,y;
+        std::cin>>ope>>x>>y;
+        
+        if(ope==1){
+            dsu.mergec(x,y);
+        }
+        else{
+            if(dsu.findc(x)==dsu.findc(y)) std::cout<<"Y\n";
+            else std::cout<<"N\n";
+        }
     }
-    int m;
-    cin>>m;
-    //边数
-    for(int i=1;i<=m;i++){
-        int a,b;
-        cin>>a>>b;
-        find_sets[b] = a;
-    }
-    cout<<findf(5)<<" "<<findf(8)<<endl;
-    unionSet(5,8);
-    cout<<findf(5)<<" "<<findf(8)<<endl;
+    
     return 0;
 }
-
-/*
-8 6
-1 2
-1 3
-3 4
-3 5
-6 7
-7 8
-*/

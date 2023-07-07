@@ -1,93 +1,99 @@
-//线段树
+//复杂度 单次查询 logn 单次修改 logn
+//luogu 3372
 
 #include <iostream>
-#include <cstdio>
 
-using namespace std;
+int const MAXN = 100005;
+using LL = long long;
 
-#define MAXN 100010
-
-struct segmentTree
+struct Node
 {
-    int l,r;
-    long long val;
-    long long tag;
+    int s,t;//该端点的起点和终点下标
+    LL tag, v;
 };
 
-segmentTree st[4*MAXN+2];
-long long arr[MAXN+2];
+Node st[MAXN*4+2];
+LL arr[MAXN];
 
-void build(long long p, long long l, long long r){
-    st[p].l = l;
-    st[p].r = r;
-    if(l==r) {
-        st[p].val = arr[l];
+void build(int s, int t, int p){
+    st[p].s = s;
+    st[p].t = t;
+    if(s==t) {
+        st[p].v = arr[s];
+        st[p].tag = 0;
         return;
     }
-    int mid = (l+r)/2;
-    build(p*2,l,mid);
-    build(p*2+1,mid+1,r);
-    st[p].val = st[p*2].val + st[p*2+1].val;
+    int m = s+((t-s)>>1);
+    build(s,m,p*2);
+    build(m+1,t,p*2+1);
+    st[p].v = st[p*2].v + st[p*2+1].v;
+    st[p].tag = 0;
 }
 
 void spreadTag(int p){
     if(st[p].tag){
-        st[p*2].val   += st[p].tag*(st[p*2].r-st[p*2].l+1);
-        st[p*2+1].val += st[p].tag*(st[p*2+1].r-st[p*2+1].l+1);
+        int s = st[p].s, t = st[p].t;
+        int m = s+((t-s)>>1);
+        st[p*2].v     += (m-s+1)*st[p].tag;
+        st[p*2+1].v   += (t-m)*st[p].tag;
         st[p*2].tag   += st[p].tag;
         st[p*2+1].tag += st[p].tag;
-        st[p].tag = 0;
+        st[p].tag=0;
     }
 }
 
-void update_add(int p, int ul, int ur, int k){
-    if(ul<=st[p].l&&ur>=st[p].r){
-        st[p].val+=(long long)(k*(st[p].r-st[p].l+1));
-        st[p].tag+=k;
+void update(int l, int r, int p, LL k){
+    int s = st[p].s, t = st[p].t;
+    if(l<=s && t<=r){
+        st[p].v   += (t-s+1) * k;
+        st[p].tag += k;
         return;
     }
     spreadTag(p);
-    int mid = (st[p].l+st[p].r)/2;
-    if(ul<=mid) update_add(p*2,  ul, ur, k);
-    if(ur>mid)  update_add(p*2+1,ul, ur, k);
-    st[p].val = st[p*2].val + st[p*2+1].val;
+    
+    int m = s+((t-s)>>1);
+    if(l<=m) update(l, r, p*2, k);
+    if(r>m)  update(l, r, p*2+1, k);
+    st[p].v = st[p*2].v + st[p*2+1].v;
 }
 
-long long query(int p, int ql, int qr){
-    if(ql<=st[p].l&&qr>=st[p].r) return st[p].val;
+LL query(int l, int r, int p){
+    int s = st[p].s, t = st[p].t;
+    if(l<=s && t<=r) return st[p].v;
+    
     spreadTag(p);
-    int mid = (st[p].l+st[p].r)/2;
-    long long ans = 0;
-    if(ql<=mid) ans+=query(p*2,ql,qr);
-    if(qr>mid)  ans+=query(p*2+1,ql,qr);
-    return ans;
+    int m = s+((t-s)>>1);
+    LL ret = 0;
+    if(l<=m) ret+=query(l,r,p*2);
+    if(r>m)  ret+=query(l,r,p*2+1);
+    
+    return ret;
 }
-
-
-
 
 int main(){
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(0);
+    
     int n,m;
-    scanf("%d%d",&n,&m);
+    std::cin>>n>>m;
+    
     for(int i=1;i<=n;i++){
-        scanf("%lld",&arr[i]);
+        std::cin>>arr[i];
     }
-
-    build(1,1,n);
-
-
-    for(int i=1;i<=m;i++){
-        int ope;
-        cin>>ope;
+    
+    build(1,n,1);
+    
+    while(m--){
+        int ope,x,y,z;
+        std::cin>>ope;
+        
         if(ope==1){
-            int x,y,z;
-            scanf("%d%d%d",&x,&y,&z);
-            update_add(1,x,y,z);
+            std::cin>>x>>y>>z;
+            update(x,y,1,z);
         }
         else{
-            int x,y;
-            scanf("%d%d",&x,&y);
-            cout<<query(1,x,y)<<endl;
+            std::cin>>x>>y;
+            std::cout<<query(x,y,1)<<"\n";
         }
     }
 
