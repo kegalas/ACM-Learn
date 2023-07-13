@@ -6,11 +6,22 @@
 
 const int MAXN = 1000005;
 
-namespace AC{
+class AC{
+public:
 	int trie[MAXN][26], total;
 	int end[MAXN],fail[MAXN];
 
-	void insert(std::string str){
+    void init(int m){
+        for(int i=0;i<=m;i++){
+            end[i] = 0;
+            fail[i] = 0;
+            for(int j=0;j<26;j++) trie[i][j] = 0;
+        }
+        total = 0;
+    }
+
+	void insert(std::string const & str){
+	    //插入模式串
 		int u = 0;
 		for(auto c:str){
 			if(!trie[u][c-'a']){
@@ -21,9 +32,9 @@ namespace AC{
 		end[u]++;
 	}
 
-	std::queue<int> qu;
-
 	void buildFail(){
+	    //构建fail指针
+	    std::queue<int> qu;
 		for(int i=0;i<26;i++){
 			if(trie[0][i]) qu.push(trie[0][i]);
 		}
@@ -44,11 +55,12 @@ namespace AC{
 		}
 	}
 
-	int query(std::string str){
+	int query(std::string const & str){
+	    //查询主串str中出现了几个模式串
 		int u = 0, res = 0;
 		for(auto c:str){
 			u = trie[u][c-'a'];
-			for(int j = u;j&&end[j]!=-1;j=fail[j]){
+			for(int j = u ; j && end[j] != -1 ; j = fail[j]){
 				res += end[j];
 				end[j] = -1;
 			}
@@ -56,20 +68,23 @@ namespace AC{
 
 		return res;
 	}
-}
+};
+
+AC ac;
 
 int main(){
 	int n;
 	std::cin>>n;
 	std::string str;
+	ac.init(1e6);
+	
 	for(int i=1;i<=n;i++){
 		std::cin>>str;
-
-		AC::insert(str);
+		ac.insert(str);
 	}
-	AC::buildFail();
+	ac.buildFail();
 	std::cin>>str;
-	std::cout<<AC::query(str)<<"\n";
+	std::cout<<ac.query(str)<<"\n";
 
 	return 0;
 }

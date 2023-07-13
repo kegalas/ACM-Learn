@@ -1,72 +1,57 @@
+//复杂度n
 //kmp,luogu3375
 #include <iostream>
-#include <cstdio>
+#include <vector>
 #include <string>
 
-using namespace std;
+std::vector<int> prefixFunc(std::string const & str){
+    //输入一个字符串，输出该字符串的前缀函数表
+    //如果输入不是字符串而是一个数组，也可以很方便的修改为vector
+    int n = str.length();
+    std::vector<int> ans(n);
 
-#define MAXN 1000005
+    for(int i=1;i<n;i++){
+        //ans[0]=0，因为只看真前缀和真后缀
+        int j = ans[i-1];
+        while(j>0 && str[i]!=str[j]) j = ans[j-1];
+        if(str[i]==str[j]) j++;
+        ans[i] = j;
+    }
 
-int nxt[MAXN];
+    return ans;
+}
 
-string s1,s2;
-
-int getNext(){
-    nxt[0]=0;
-    int r = 1;
-    int l = 0;
-    while (r<s2.length()){
-        if (s2[l] == s2[r]){
-            nxt[r]=l+1;
-            r++;
-            l++;
-        }
-        else if (l){
-            l = nxt[l-1];
-        }
-        else{
-            nxt[r]=0;
-            r++;
+std::vector<int> KMP(std::string const & s, std::string const & p){
+    //输入主串和模式串，返回所有匹配的开始下标，下标从0开始
+    std::vector<int> vec;
+    std::vector<int> pf = prefixFunc(p);
+    int ns = s.size(), np = p.size();
+    for(int i=0, j=0;i<ns;i++){
+        while(j && s[i]!=p[j]) j = pf[j-1];
+        if(s[i]==p[j]) j++;
+        if(j==np){
+            vec.push_back(i-j+2);
+            j = pf[j-1];
         }
     }
     
-    return 0;
+    return vec;
 }
 
 int main(){
-    cin>>s1>>s2;
-    //给定两个字符串
-    getNext();
+    std::string str1,str2;
+    std::cin>>str1>>str2;
 
-    int pos=0,tar=0;
-
-    while (tar<s1.length())
-    {
-        if(s1[tar]==s2[pos]){
-            pos++;
-            tar++;
-        }
-        else if (pos){
-            pos = nxt[pos-1];
-        }
-        else{
-            tar++;
-        }
-
-        if (pos==s2.length()){
-            cout<<tar-pos+1<<endl;
-            //输出s2在s1中出现的位置
-            pos = nxt[pos-1];
-        }
-        
+    for(auto x:KMP(str1,str2)){
+        std::cout<<x<<"\n";
     }
 
-    for(int i=0;i<s2.length();i++){
-        cout<<nxt[i]<<" ";
-        //表示s2​的长度为i的前缀的最长border长度。
+    //下面不是kmp的一部分，是洛谷3375的要求
+    for(auto x:prefixFunc(str2)){
+        std::cout<<x<<" ";
     }
-
-    cout<<endl;
+    std::cout<<"\n";
 
     return 0;
 }
+
