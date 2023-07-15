@@ -6,6 +6,7 @@
 
 std::vector<int> prefixFunc(std::string const & str){
     //输入一个字符串，输出该字符串的前缀函数表
+    //前缀函数pi[i]是满足s[0...x-1]==s[i-x+1...i]的最大的x
     //如果输入不是字符串而是一个数组，也可以很方便的修改为vector
     int n = str.length();
     std::vector<int> ans(n);
