@@ -20,9 +20,10 @@ std::vector<std::vector<int> > graph(MAXN);//vector版的链式前向星
 std::vector<int> cur(MAXN);
 int level[MAXN];
 
-bool BFS(int const & s, int const & t){//BFS分层
+bool BFS(int s, int t){//BFS分层
     std::memset(level, -1, sizeof(level));
     level[s] = 0;
+    cur.assign(MAXN,0);//初始化当前弧
     std::queue<int> qu;
     qu.push(s);
 
@@ -50,8 +51,9 @@ LL DFS(int const & p, LL const & flow, int const & s, int const & t){
     LL surplus = flow;//剩余流量
 
     int size = graph[p].size();
-    for(int & i=cur[p];i<size && surplus;i++){//这里i是引用，是当前弧优化
+    for(int i=cur[p];i<size && surplus;i++){
         int eg = graph[p][i];
+        cur[p] = i;//更新当前弧
         int to = edges[eg].v;
         LL vol = edges[eg].w;
         if(vol>0 && level[to]==level[p]+1){
@@ -68,7 +70,6 @@ LL DFS(int const & p, LL const & flow, int const & s, int const & t){
 LL Dinic(int const & p, LL const & flow, int const & s, int const & t){
     LL ans = 0;
     while(BFS(s,t)){
-        cur.assign(MAXN,0);
         ans += DFS(p,flow,s,t);
     }
     return ans;

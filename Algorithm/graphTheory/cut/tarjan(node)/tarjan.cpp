@@ -11,6 +11,7 @@ const int MAXN = 20005;
 const int MAXM = 100005;
 
 int dfn[MAXN], low[MAXN], cnt=0;
+//含义见割边模板
 vector<int> edges[MAXN];
 vector<int> cut;//存储割点
 
@@ -23,6 +24,7 @@ void tarjan(int u, bool root = true){
             tarjan(v,false);
             low[u] = min(low[u],low[v]);
             tot += (low[v]>=dfn[u]);//统计满足的点的个数
+            //一个点x是割点的充要条件是，它至少一个子节点y满足dfn[x]>=low[y]，特别的，对于根节点，需要至少两个这样的子节点
         }
         else{
             low[u] = min(low[u], dfn[v]);

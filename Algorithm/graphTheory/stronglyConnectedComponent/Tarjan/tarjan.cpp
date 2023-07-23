@@ -1,17 +1,26 @@
-//复杂度 n+m
+//强连通分量，复杂度 n+m
+//luogu P2863
 #include <iostream>
 #include <vector>
 #include <stack>
 
-using namespace std;
+const int MAXN = 10005;
+const int MAXM = 50005;
 
-const int MAXN = 5005;
-const int MAXM = 10005;
-
-int dfn[MAXN], low[MAXN], instk[MAXN], scc[MAXN], cnt=0, cscc=0;
-//scc代表每个店所属的强连通分量的编号
-vector<int> edges[MAXN];
-stack<int> stk;
+int dfn[MAXN], low[MAXN], instk[MAXN], scci[MAXN], cnt=0, cscc=0;
+std::vector<int> edges[MAXN];
+std::stack<int> stk;
+std::vector<int> scc[MAXN];
+//dfn是dfs时的顺序的序号
+//stk中存入两类点，访问到节点x时
+//1.搜索树上x的祖先节点
+//2.已经访问过，并且存在一条路径到达x祖先的节点
+//low[x]定义为满足以下两个条件的节点的最小dfn
+//1.该点在stk中
+//2.存在一条从subtree(x)出发的有向边，以该点为终点
+//scci[x]代表，x这个结点在第几个分量中
+//cscc代表有几个分量
+//scc[j]中表示，第j个分量的所有节点
 
 void tarjan(int u){
     low[u] = dfn[u] = ++cnt;
@@ -21,10 +30,10 @@ void tarjan(int u){
         int v = edges[u][i];
         if(!dfn[v]){
             tarjan(v);
-            low[u] = min(low[u],low[v]);
+            low[u] = std::min(low[u],low[v]);
         }
         else if(instk[v]){
-            low[u] = min(low[u], dfn[v]);
+            low[u] = std::min(low[u], dfn[v]);
         }
     }
     if(low[u]==dfn[u]){
@@ -34,27 +43,30 @@ void tarjan(int u){
             top = stk.top();
             stk.pop();
             instk[top] = 0;
-            scc[top] = cscc;
+            scci[top] = cscc;
+            scc[cscc].push_back(top);
         }while(top!=u);
     }
 }
 
 int main(){
     int n,m;
-    cin>>n>>m;
-    //点数，边数
+    std::cin>>n>>m;
+    
     for(int i=1;i<=m;i++){
         int a,b;
-        cin>>a>>b;
-        //起点，终点
-        edges[a].push_back(b);
+        std::cin>>a>>b;
+        edges[a].push_back(b);//有向边
     }
+    
     for(int i=1;i<=n;i++){
-        if(!dfn[i])
-            tarjan(i);
+        if(!dfn[i]) tarjan(i);//注意遍历所有dfn为零的点
     }
-    for(int i=1;i<=n;i++){
-        cout<<scc[i]<<endl;
+    
+    int ans = 0;
+    for(int i=1;i<=cscc;i++){
+        if(scc[i].size()>1) ans++;
     }
+    std::cout<<ans<<"\n";
     return 0;
 }
