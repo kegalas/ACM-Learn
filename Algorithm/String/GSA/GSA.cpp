@@ -1,5 +1,6 @@
 //广义后缀自动机，其实就是插入多个字符串的后缀自动机，但只能离线build
 //luogu p6139
+//后缀自动机的性质都可以用过来
 #include <iostream>
 #include <algorithm>
 #include <cmath>
@@ -46,6 +47,7 @@ public:
     
     int insert(int last, int ch){
         //传入的是即将插入的字符的父节点编号，以及该字符
+        //只用在build里，不要直接把字符串插入，应该先insertTrie再build
         int cur = st[last].next[ch];
         int p = 0;
         st[cur].len = st[last].len + 1;

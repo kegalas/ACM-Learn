@@ -1,4 +1,5 @@
-//复杂度 klogn
+//中国剩余定理 复杂度 klogk
+//luogu p1495
 #include <iostream>
 
 using namespace std;
@@ -7,9 +8,7 @@ typedef long long ll;
 
 const int MAXN = 10005;
 
-long long a[MAXN],r[MAXN];
-
-long long exgcd(ll a, ll b, ll &x, ll &y){
+ll exgcd(ll a, ll b, ll &x, ll &y){
     if(!b){
         x=1;
         y=0;
@@ -22,27 +21,46 @@ long long exgcd(ll a, ll b, ll &x, ll &y){
     return d;
 }
 
+ll exgcd_inv(ll a, ll b){
+    ll x,y;
+    ll d = exgcd(a,b,x,y);
+    return (x+b)%b;
+}
+
+class CRT{
+public:
+    ll ax[MAXN],rx[MAXN];//每个方程的形式为x≡ai(mod ri)，要求ri互质
+    int k=0;//k个方程
+    
+    void add(ll a, ll r){
+        ax[++k] = a;
+        rx[k] = r;
+    }
+    
+    ll solve(){
+        ll n=1, ans=0;
+        for(int i=1;i<=k;i++){
+            n = n * rx[i];
+        }
+        for(int i=1;i<=k;i++){
+            ll m = n/rx[i];
+            ans = (ans+ax[i]*m*exgcd_inv(m,rx[i]))%n;
+        }
+        
+        return ans;
+    }
+};
+
+CRT crt;
+
 int main(){
     int k;
     cin>>k;
-    //共有k个方程
     for(int i=1;i<=k;i++){
-        cin>>a[i]>>r[i];
-		//x≡ai(mod ri)
+        ll a,r;
+        std::cin>>r>>a;
+        crt.add(a,r);
     }
-    
-    ll n=1,ans=0;
-    for(int i=1;i<=k;i++){
-        n = n * r[i];
-    }
-    for(int i=1;i<=k;i++){
-        ll m = n/r[i];
-        ll x,y;
-        exgcd(m,r[i],x,y);
-        ans = (ans+a[i]*m*x%n)%n;
-    }
-    
-    cout<<ans<<endl;
-    //输出x的值
+    cout<<crt.solve()<<endl;
     return 0;
 }

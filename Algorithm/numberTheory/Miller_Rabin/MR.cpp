@@ -1,54 +1,60 @@
 //对数 n 进行 k 轮测试的时间复杂度是 klog^3(n)
 //miller-rabin
+//loj 143
+//通过测试的有可能是素数，不通过的一定不是素数
 #include <iostream>
 #include <ctime>
 #include <cstdio>
+#include <cstdint>
 
-using namespace std;
+using LL = __int128;//本题数据范围过大，防止运算中爆掉
 
-const int test_time = 10;
+LL const test_time = 10;
 
-int qPowMod(int a, int m, int n){
-    if(m==0) return 1;
-    if(m==1) return (a%n);
-    long long ans = 1; //不打ll会溢出
-    while(m){
-        if(m&1){
-            ans = ans%n*a%n;
+LL qPowMod(LL n, LL p, LL m){
+    LL res = 1;
+    while(p>0){
+        if(p&1){
+            res = (res * n)%m;
         }
-        a = (long long)a%n*a%n;//这里不打ll会溢出导致判断错误
-        m>>=1;
+        n = (n*n)%m;
+        p>>=1;
     }
-    return ans;
+    return res;
 }
 
-bool millerRabin(int n) {
+bool millerRabin(LL n) {
     if (n < 3 || n % 2 == 0) return n == 2;
-    int a = n - 1, b = 0;
+    LL a = n - 1, b = 0;
     while (a % 2 == 0) a /= 2, ++b;
     // test_time 为测试次数,建议设为不小于 8
     // 的整数以保证正确率,但也不宜过大,否则会影响效率
-    for (int i = 1, j; i <= test_time; ++i) {
-        int x = rand() % (n - 2) + 2, v = qPowMod(x, a, n);
+    for (LL i = 1, j; i <= test_time; ++i) {
+        LL x = rand() % (n - 2) + 2;
+        LL v = qPowMod(x, a, n);
         if (v == 1) continue;
         for (j = 0; j < b; ++j) {
             if (v == n - 1) break;
-            v = (long long)v * v % n;
+            v = v * v % n;
         }
-        if (j >= b) return 0;
+        if (j == b) return 0;
     }
     return 1;
 }
 
 int main(){
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(0);
+    
     srand(time(NULL));
-    int n;
-    cin>>n;
-    if(millerRabin(n)){
-        cout<<"Probably a prime"<<endl;
-    }
-    else{
-        cout<<"A composite"<<endl;
+    long long n;
+    while(std::cin>>n){
+        if(millerRabin(n)){
+            std::cout<<"Y\n";
+        }
+        else{
+            std::cout<<"N\n";
+        }
     }
     return 0;
 }

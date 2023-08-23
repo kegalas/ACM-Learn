@@ -39,7 +39,7 @@ ULL arr[MAXN];
 
 ULL H(std::string const & str){
     ULL ret = 0;
-    ULL const base = 131;
+    ULL const base = 131;//ascii也就128个字符，质数131作为底数足够
     
     for(auto c:str){
         ret = ret*base+(ULL)c;

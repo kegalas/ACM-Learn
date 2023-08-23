@@ -1,28 +1,41 @@
 //复杂度logn
 //快速幂
+//luogu P1226
 #include <iostream>
 
-using namespace std;
+using LL = long long;
 
-long long binpow(long long n, long long p){
-    long long res = 1;
-    while(p>0){
+LL qPow(LL x, LL p){
+    //x^p
+    LL res = 1;
+    while(p){
         if(p&1){
-            res = res * n;
+            res = res * x;
         }
-        n *= n;
+        x *= x;
         p>>=1;
     }
     return res;
+}
 
+LL qPowMod(LL x, LL p, LL m){
+    //x^p % m
+    LL res = 1;
+    while(p){
+        if(p&1){
+            res = (res * x)%m;
+        }
+        x = (x*x)%m;
+        p>>=1;
+    }
+    return res;
 }
 
 
 int main(){
-    long long n,p;
-    cin>>n>>p;
-
-    cout<<binpow(n,p)<<endl;
+    LL a,b,p;
+    std::cin>>a>>b>>p;
+    std::cout<<a<<"^"<<b<<" mod "<<p<<"="<<qPowMod(a,b,p);
 
     return 0;
 }

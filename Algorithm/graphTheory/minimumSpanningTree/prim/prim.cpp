@@ -1,9 +1,8 @@
 //复杂度 (m+n)logn
+//最小生成树prim，luogu p3366
 #include <iostream>
 #include <vector>
 #include <queue>
-
-using namespace std;
 
 const int MAXN = 5005;
 const int MAXM = 200005;
@@ -12,30 +11,28 @@ const int INF = 0x5fffffff;
 struct edge{
     int v,w;
 
-    edge()=default;
+    edge(){};
     edge(int v,int w):v(v),w(w){}
 
     bool operator>(const edge& x) const {return w>x.w;}
 };
 
-vector<edge> graph[MAXN];
+std::vector<edge> graph[MAXN];
 bool vis[MAXN];
 
-priority_queue<edge, vector<edge>, greater<edge> > pq;
-
-//以下orz代表不连通
+std::priority_queue<edge, std::vector<edge>, std::greater<edge> > pq;
 
 int main(){
     int n,m;//点数，边数
-    scanf("%d%d",&n,&m);
+    std::cin>>n>>m;
     int ans = 0;
     int cnt = 1;
 
     for(int i=1;i<=m;i++){
-        int a,b,c;//起点，终点，边权
-        scanf("%d%d%d",&a,&b,&c);
-        graph[a].push_back(edge(b,c));
-        graph[b].push_back(edge(a,c));
+        int u,v,w;//起点，终点，边权
+        std::cin>>u>>v>>w;
+        graph[u].push_back(edge(v,w));
+        graph[v].push_back(edge(u,w));
         //无向图
     }
 
@@ -49,7 +46,7 @@ int main(){
         pq.pop();
         while(vis[minx.v]){
             if(pq.empty()){
-                cout<<"orz"<<endl;
+                std::cout<<"orz\n";//不连通
                 return 0;
             }
             minx=pq.top();
@@ -67,10 +64,10 @@ int main(){
     }
 
     if(cnt<n){
-        cout<<"orz"<<endl;
+        std::cout<<"orz\n";
     }
     else{
-        cout<<ans<<endl;
+        std::cout<<ans<<"\n";
     }
 
     return 0;

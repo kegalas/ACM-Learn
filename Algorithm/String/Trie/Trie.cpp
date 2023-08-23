@@ -16,7 +16,7 @@ public:
     void init(){
         for(int i=0;i<=cnt;i++) for(int j=0;j<128;j++) nxt[i][j] = 0;
         for(int i=0;i<=cnt;i++) sum[i] = 0;
-        cnt = 0;
+        cnt = 0;//起始节点编号为0
     }
     
     void insert(std::string const & s){

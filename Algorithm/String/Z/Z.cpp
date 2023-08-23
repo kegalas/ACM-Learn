@@ -38,7 +38,8 @@ double const PI = acos(-1);
 
 std::vector<int> zFunc(std::string const & str){
     //求出一个字符串的z函数，即满足z[i]是s[0...x-1]==s[i...i+x-1]的最大的x
-    //特别的z[0]=0
+    //特别的z[0]=0，也有些题目是等于串长，需要自行调整
+    //kmp里面添加字符集外字符的操作在这里也可以用
     int n = str.size();
     std::vector<int> z(n);
     

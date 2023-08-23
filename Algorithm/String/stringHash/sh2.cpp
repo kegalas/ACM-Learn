@@ -1,4 +1,5 @@
-//双哈希法，字符串哈希
+//双哈希法，两个字符串的两个哈希必须分别相同，才会被考虑为相同的字符串
+//比起单哈希，更不容易被卡
 //luogu P3370
 #include <iostream>
 #include <algorithm>
@@ -39,7 +40,7 @@ ULL const MOD1 = 998244353;
 ULL const MOD2 = 1e9+7;
 ULL const base = 131;
 
-struct Data{
+struct Data{//把字符串的两个哈希捆起来，便于排序比较等操作
     ULL x,y;
 };
 

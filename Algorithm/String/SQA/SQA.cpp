@@ -40,6 +40,8 @@ struct State{
     int next[MAXS];  
 };
 
+//SQA接受字符串的所有子序列（不需要连续，可以为空）
+
 class SQA{
 public:
     State st[MAXN];
@@ -58,6 +60,7 @@ public:
     }
     
     bool query(std::vector<int> const & str){
+		//查询str是否是子序列（可以不连续）
         int p = 1, n=str.size();
         for(int i=0;i<n;i++){
             p = st[p].next[str[i]];

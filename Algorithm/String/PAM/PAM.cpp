@@ -41,6 +41,11 @@ struct State{
 
 std::string str;
 
+//PAM的每一个状态代表原字符串的一个回文子串，每一个转移代表从当前状态字符串的前后同时加一个相同字符后的状态。可以接受其所有回文子串。除了奇根都是可行状态（当然不能为空时偶根不可行）
+//fail指针指向该状态的最长回文真后缀。例如ayawaya就指向aba。总体和AC自动机的fail转移很像，都是没有ch的转移，则看fail有没有ch的转移，若fail没有则看fail[fail]的，以此类推。
+//回文串分为奇长度和偶长度的，所以PAM有奇根和偶根，偶根的fail指向奇根，奇根不可能失配。
+//PAM和SAM一样是动态构建的。
+
 class PAM{
 public:
     int last,cnt,pos;

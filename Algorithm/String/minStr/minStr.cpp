@@ -38,7 +38,7 @@ double const PI = acos(-1);
 
 int arr[MAXN];
 
-int minStr(int n){
+int minStr(int n){//数组下标从0开始，共n个；返回最小表示的开始下标
     int i=0, j=1, k=0;
     while(i<n && j<n && k<n){
         if(arr[(i+k)%n]==arr[(j+k)%n]){

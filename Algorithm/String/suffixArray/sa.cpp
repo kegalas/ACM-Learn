@@ -36,7 +36,7 @@ int const MOD = 998244353;
 double const PI = acos(-1);
 
 int rk[MAXN<<1],sa[MAXN],tarr[MAXN<<1];
-//rk[i]表示后缀i（从1开始，后缀i代表字符串从i开始的子串）的排名，sa[i]表示所有后缀第i小的编号，排名和编号都从1开始
+//rk[i]表示后缀i（从1开始，后缀i代表字符串从i开始到结束的子串）的排名，sa[i]表示所有后缀第i小的起点序号，排名和编号都从1开始
 
 void getSA(std::string const & s){
     int n = s.size();

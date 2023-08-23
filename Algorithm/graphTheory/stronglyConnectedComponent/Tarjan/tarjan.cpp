@@ -1,5 +1,8 @@
 //强连通分量，复杂度 n+m
 //luogu P2863
+//一个有向图是强连通的当且仅当其中任意两个顶点相互可达
+//强连通分量是有向图中的极大的强连通子图。极大意味着把一个图分为若干个强连通分量，分量之间互相不可达。或者，不存在包含该子图的更大的子图也是强连通分量。
+
 #include <iostream>
 #include <vector>
 #include <stack>
@@ -62,7 +65,6 @@ int main(){
     for(int i=1;i<=n;i++){
         if(!dfn[i]) tarjan(i);//注意遍历所有dfn为零的点
     }
-    
     int ans = 0;
     for(int i=1;i<=cscc;i++){
         if(scc[i].size()>1) ans++;

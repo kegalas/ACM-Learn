@@ -39,6 +39,9 @@ std::vector<int> KMP(std::string const & s, std::string const & p){
     return vec;
 }
 
+//我们可以通过把模式串和主串拼在一起，p+#+s，然后求这个字符串的前缀函数表（#代表不在主串、模式串字符集内的一个符号），然后pi[i]如果等于模式串的长度，那么i是匹配模式串的子串的起点。
+//关于最小循环结，设字符串下标从1开始，长度为n，则如果n%(n-pf[n])==0，则有循环节，并且长度为n-pf[n]（当然长度可以为n）
+
 int main(){
     std::string str1,str2;
     std::cin>>str1>>str2;

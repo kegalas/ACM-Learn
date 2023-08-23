@@ -4,8 +4,6 @@
 //luogu4716
 #include <iostream>
 
-using namespace std;
-
 const int MAXN = 105;
 const int MAXM = 10005;
 const int INF = 0x7fffffff;
@@ -17,9 +15,9 @@ struct Edge{
 Edge edge[MAXM]; 
 int vis[MAXN],id[MAXN];
 int in[MAXN],pre[MAXN];
-int n,m,root;
 
-int zhuliu(){
+int zhuliu(int n, int m, int root){
+    //返回最小树形图的边权和，如果不存在则返回-1
     int ans = 0;
     for(;;){
         for(int i=1;i<=n;i++) in[i]=INF;
@@ -27,14 +25,14 @@ int zhuliu(){
         for(int i=1;i<=m;i++){
             int u = edge[i].u;
             int v = edge[i].v;
-            if(u!=v&&edge[i].w<in[v]){//遍历所有边，找到对每个点的最短入边
+            if(u!=v && edge[i].w<in[v]){//遍历所有边，找到对每个点的最短入边
                 in[v] = edge[i].w;
                 pre[v] = u;
             }
         }
         
         for(int i=1;i<=n;i++){
-            if(i!=root&&in[i]==INF){
+            if(i!=root && in[i]==INF){
                 return -1;//无解
             }
         }
@@ -56,7 +54,7 @@ int zhuliu(){
                 vis[v] = i;
                 v = pre[v];
             }
-            if(v!=root&&id[v]==-1){
+            if(v!=root && id[v]==-1){
                 id[v] = ++cnt;
                 for(int u=pre[v];u!=v;u=pre[u]) id[u] = cnt;
             }
@@ -85,14 +83,14 @@ int zhuliu(){
 }
 
 int main(){
-    //freopen("in.in","r",stdin);
-    cin>>n>>m>>root;
+    int n,m,root;
+    std::cin>>n>>m>>root;
     //点数，边数，根节点序号
     for(int i=1;i<=m;i++){
-        cin>>edge[i].u>>edge[i].v>>edge[i].w;
+        std::cin>>edge[i].u>>edge[i].v>>edge[i].w;
         //起点，终点，边权
     }
-    cout<<zhuliu()<<endl;
+    std::cout<<zhuliu(n,m,root)<<"\n";
     return 0;
 }
 
