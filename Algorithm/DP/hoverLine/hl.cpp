@@ -1,5 +1,6 @@
 //luogu p1387
-//悬线法求最大矩形/正方形，复杂度 nm
+//悬线法求符合条件的最大矩形/正方形，复杂度 nm
+
 #include <iostream>
 #include <algorithm>
 #include <cmath>
@@ -50,23 +51,28 @@ int ans = 0;
 void dp(int n, int m){
     for(int i=1;i<=n;i++){
         for(int j=1;j<=m;j++){
-            if(grid[i][j]) l[i][j] = l[i][j-1]+1;//这里的条件看情况选择，下面同理
+            if(grid[i][j]) l[i][j] = l[i][j-1]+1;//若(i,j-1)可选，当然首先要(i,j)可选，(i,j-1)不可选时l[i][j-1]会等于0，l[i][j]就会等于1
+            //这里的if条件看情况选择，下面同理
         }
     }
     for(int i=1;i<=n;i++){
         for(int j=m;j>=1;j--){
-            if(grid[i][j]) r[i][j] = r[i][j+1]+1;
+            if(grid[i][j]) r[i][j] = r[i][j+1]+1;//若(i,j+1)可选
         }
     }
     for(int i=1;i<=n;i++){
         for(int j=1;j<=m;j++){
             if(grid[i][j]){
                 u[i][j] = u[i-1][j]+1;
-                if(grid[i-1][j]){
+                if(grid[i-1][j]){//若(i-1,j)可选
                     l[i][j] = std::min(l[i][j], l[i-1][j]);
                     r[i][j] = std::min(r[i][j], r[i-1][j]);
                 }
                 //然后在这里对ans进行该有的操作，因题而异
+                //对于(i,j)这一格来说，它对应的悬线向左右拓展能得到的最大矩形面积为
+                //u[i][j]*(l[i][j]+r[i][j]-1)
+                //最大正方形为
+                //min(u[i][j],l[i][j]+r[i][j]-1)的平方
                 ans = std::max(ans,std::min(u[i][j], l[i][j]+r[i][j]-1));
             }
         }

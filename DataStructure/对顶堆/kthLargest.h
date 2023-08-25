@@ -1,4 +1,7 @@
-//维护一个序列的第k大数，每次操作logn
+//动态维护一个集合的第k大数，每次操作logn
+//spoj RMID2
+//维护第k小只要维护第n-k大即可
+//另外这个k是可以变化的，不需要固定，复杂度确实是logn
 
 #include <iostream>
 #include <algorithm>
@@ -10,8 +13,8 @@ class KthLargest{
 private:
     std::priority_queue<T,std::vector<T>,std::less<T> > big{};
     std::priority_queue<T,std::vector<T>,std::greater<T> > small{};
-    int kth{};
-    int size{};
+    size_t kth{};
+    size_t size{};
     
     void update(){
         kth = std::min(kth,size);
@@ -28,13 +31,15 @@ private:
 public:
     KthLargest():kth(1),size(0){}
     
-    T findK(int k){
+    T findK(size_t k){
+		//找到第k大的数字
         kth = k;
         update();
         return small.top();
     }
     
-    void eraseK(int k){
+    void eraseK(size_t k){
+		//移除第k大的数字
         kth = k;
         update();
         small.pop();
@@ -43,6 +48,7 @@ public:
     }
     
     void insert(T x){
+		//插入一个数字
         size++;
         if(small.empty() || x>=small.top()){
             small.push(x);
@@ -53,8 +59,9 @@ public:
         update();
     }
     
-    int getSize(){
+    size_t getSize(){
         return size;
     }
 };
 
+KthLargest<int> ddd;

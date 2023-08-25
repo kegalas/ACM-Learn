@@ -1,5 +1,7 @@
 //复杂度 单次查询 logn 单次修改 logn
-//luogu 3372
+//luogu p3372
+//线段树维护的数据要求满足结合律，比如区间和，区间最大区间最小，区间gcd
+//区间修改一般支持加、乘、赋值
 
 #include <iostream>
 
@@ -15,7 +17,7 @@ struct Node
 Node st[MAXN*4+2];
 LL arr[MAXN];
 
-void build(int s, int t, int p){
+void build(int s, int t, int p=1){
     st[p].s = s;
     st[p].t = t;
     if(s==t) {
@@ -42,7 +44,7 @@ void spreadTag(int p){
     }
 }
 
-void update(int l, int r, int p, LL k){
+void update(int l, int r, LL k, int p=1){
     int s = st[p].s, t = st[p].t;
     if(l<=s && t<=r){
         st[p].v   += (t-s+1) * k;
@@ -52,12 +54,12 @@ void update(int l, int r, int p, LL k){
     spreadTag(p);
     
     int m = s+((t-s)>>1);
-    if(l<=m) update(l, r, p*2, k);
-    if(r>m)  update(l, r, p*2+1, k);
+    if(l<=m) update(l, r, k, p*2);
+    if(r>m)  update(l, r, k, p*2+1);
     st[p].v = st[p*2].v + st[p*2+1].v;
 }
 
-LL query(int l, int r, int p){
+LL query(int l, int r, int p=1){
     int s = st[p].s, t = st[p].t;
     if(l<=s && t<=r) return st[p].v;
     
@@ -81,7 +83,7 @@ int main(){
         std::cin>>arr[i];
     }
     
-    build(1,n,1);
+    build(1,n);
     
     while(m--){
         int ope,x,y,z;
@@ -89,11 +91,11 @@ int main(){
         
         if(ope==1){
             std::cin>>x>>y>>z;
-            update(x,y,1,z);
+            update(x,y,z);
         }
         else{
             std::cin>>x>>y;
-            std::cout<<query(x,y,1)<<"\n";
+            std::cout<<query(x,y)<<"\n";
         }
     }
 

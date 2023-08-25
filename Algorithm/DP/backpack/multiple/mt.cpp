@@ -1,5 +1,7 @@
 //复杂度 Wsum(logk_i) 
 //luogu P1776
+//即每种物品有ki个
+//我们可以简单转化为01背包，但是复杂度太高；采用二进制分组的思想
 #include <iostream>
 #include <cmath>
 

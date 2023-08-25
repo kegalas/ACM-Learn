@@ -1,5 +1,6 @@
 //复杂度 nlogn
 //Luogu P1908
+//逆序对<i,j>即，符合i<j且ai>aj的<i,j>的个数
 #include <iostream>
 #include <algorithm>
 

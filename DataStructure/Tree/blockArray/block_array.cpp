@@ -1,4 +1,4 @@
-//luogu 3372 和线段树区间加，维护区间和一样
+//luogu p3372 和线段树区间加，维护区间和一样
 //复杂度n sqrt(n)
 //在块内时对块操作，跨块时中间对块操作，两边多余部分暴力处理
 #include <iostream>
@@ -100,7 +100,7 @@ public:
     }
 };
 
-BA ba;
+BA ba;//注意，开了大数组，要声明在main函数外面，或者可以去用动态分配内存
 
 int main(){
     std::ios::sync_with_stdio(false);

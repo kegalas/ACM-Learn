@@ -1,5 +1,6 @@
-//复杂度 单次查询 logn 预处理 nlogn
+//复杂度 单次查询 logn 预处理 nlogn，常数小点的可以用重链剖分
 //luogu P3379
+//倍增求最近公共祖先
 #include <iostream>
 #include <vector>
 #include <cstdio>

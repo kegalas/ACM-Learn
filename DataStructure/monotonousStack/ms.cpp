@@ -1,4 +1,9 @@
-//单调栈 luogu5788
+//单调栈 luogu p5788
+//本题定义f[i]为数列中第i个元素之后第一个大于a[i]的元素的下标（不存在则为0）
+//很显然我们可以维护一个单调不增的栈
+//当push的元素x大于栈顶t时，第一个大于t的元素就是x。反复出栈直到栈顶t小于等于x或栈空，入栈。
+//复杂度 n
+
 #include <iostream>
 #include <algorithm>
 #include <cmath>
@@ -46,7 +51,7 @@ int main(){
 
     for(int i=1;i<=n;i++){
         while(top&&arr[stk[top]]<arr[i]){
-            ans[stk[top]] = i;
+            ans[stk[top]] = i;//这一行是具体的操作，因题而异；而其他行在这个for循环里都是固定的
             top--;
         }
 

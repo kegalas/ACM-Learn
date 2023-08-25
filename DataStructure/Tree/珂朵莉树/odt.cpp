@@ -1,3 +1,8 @@
+//珂朵莉树，区间推平问题
+//方便给某个区间赋值，区间加数，维护区间第k大值，区间和等等
+//数据随机的情况下，复杂度为nloglogn
+//珂朵莉树的每一个节点都是一个区间，这个区间内的值相同。
+//cf896c
 #include <iostream>
 #include <algorithm>
 #include <cmath>
@@ -68,15 +73,22 @@ public:
         auto end = split(r+1), begin = split(l);
         for(auto it=begin;it!=end;it++){
             //这里是操作
+            //这些操作都很暴力，例如k大值，就把区间全部枚举排序一遍去找
+            //例如区间和，就枚举区间加起来，注意是加it->v * (it->r-it->l+1)
+            //例如区间加数，就枚举区间给所有的it->v都加一个数
         }
     }
 };
+
+ODT odt;
 
 int main(){
     std::ios::sync_with_stdio(false);
     std::cin.tie(0);
 
-	
+    //珂朵莉树的初始化不能用assign，设范围为[1,w]，初值全部为0，则
+    int w = 100;
+	odt.tree.insert(Node(1,w,0));
 
     return 0;
 }
