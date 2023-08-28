@@ -1,4 +1,4 @@
-//求后缀树组，复杂度O(nlog^2n)，复杂度O(nlogn)的见sa2.cpp
+//求后缀数组，复杂度O(nlog^2n)，复杂度O(nlogn)的见sa2.cpp
 //luogu p3809
 #include <iostream>
 #include <algorithm>

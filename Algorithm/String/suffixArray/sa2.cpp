@@ -1,4 +1,4 @@
-//求后缀树组，复杂度O(nlogn)
+//求后缀数组，复杂度O(nlogn)
 //luogu p3809
 #include <iostream>
 #include <algorithm>
