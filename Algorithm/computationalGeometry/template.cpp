@@ -63,6 +63,11 @@ bool ge(db a, db b)  {return a - b          > EPS;}//大于
 bool le(db a, db b)  {return a - b          < -EPS;}//小于
 bool geq(db a, db b) {return a - b          > -EPS;}//大于等于
 bool leq(db a, db b) {return a - b          < EPS;}//小于等于
+int sgn(db x) {
+    if (std::abs(x) < EPS) return 0;
+    if (x < 0) return -1;
+    return 1;
+} // 符号，等于零返回0，大于零返回1，小于零返回-1
 
 /////////////////////////////////////////////////
 //基础运算
@@ -82,6 +87,7 @@ db slope(Vec v){return v.y/v.x;}//斜率，不存在时，用后面的paral_y函
 /////////////////////////////////////////////////
 //向量操作
 
+db sin_v(Vec a, Vec b){return (a^b)/len(a)/len(b);}//向量内积，右手定则
 db cos_v(Vec a, Vec b){return a*b/len(a)/len(b);}//向量夹角余弦
 Vec norm(Vec v){return {v.x/len(v), v.y/len(v)};}//求其单位向量
 Vec pnorm(Vec v){return (v.x<0?-1:1)/len(v)*v;}//与原向量平行且横坐标大于零的单位向量
@@ -115,6 +121,7 @@ bool paral_x(Vec v){return eq(v.y,0.0);}//是否平行x轴
 bool paral_y(Vec v){return eq(v.x,0.0);}//是否平行y轴
 bool on(Point p, Line l){return eq((p.x-l.p.x)*l.v.y, (p.y-l.p.y)*l.v.x);}//点是否在直线上
 bool on(Point p, Seg l){return eq(len(p-l.a)+len(p-l.b),len(l.a-l.b));}//点是否在线段上
+//bool on(Point p, Seg l){return sgn((p-l.a)^(l.b-l.a))==0 && sgn((p-l.a)*(p-l.b))<=0 ;}//点是否在线段上，无须len的判断法
 bool operator==(Point a, Point b){return eq(a.x,b.x)&&eq(a.y,b.y);}//点重合
 bool operator==(Line a, Line b){return on(a.p,b)&&on(a.p+a.v,b);}//直线重合
 bool operator==(Seg a, Seg b){return ((a.a==b.a&&a.b==b.b)||(a.a==b.b&&a.b==b.a));}//线段（完全）重合
@@ -128,6 +135,14 @@ bool tangency(Circle c1, Circle c2){return eq(len(c1.o-c2.o),c1.r+c2.r);}//两�
 db dis(Point a, Point b){return len(a-b);}//两点距离
 db dis(Point p, Line l){return std::abs((p^l.v)-(l.p^l.v))/len(l.v);}//点到直线的距离
 db dis(Line a, Line b){return std::abs((a.p^pnorm(a.v))-(b.p^pnorm(b.v)));}//两直线距离，需要确保平行
+db dis(Point p, Seg s){ // 点到线段的距离
+    if(sgn(cos_v(p-s.a, s.b-s.a))<0 || sgn(cos_v(p-s.b, s.a-s.b))<0)
+        return std::min(dis(p, s.a), dis(p, s.b));
+    return dis(p, line(s));
+}
+db dis(Seg s1, Seg s2){ // 线段之间的距离，前提是不相交。相交时为0，需要自己判断
+    return std::min(std::min(dis(s1.a, s2), dis(s1.b, s2)), std::min(dis(s2.a, s1), dis(s2.b, s1)));
+}
 
 /////////////////////////////////////////////////
 //平移
@@ -160,12 +175,42 @@ Seg reflect(Seg l, Line ax){return {reflect(l.a, ax), reflect(l.b, ax)};}
 
 std::vector<Point> inter(Line a, Line b){
     //两直线的交点，没有交点返回空vector，否则返回一个大小为1的vector
+    // 不能重叠
     db c = a.v^b.v;
     std::vector<Point> ret;
     if(eq(c,0.0)) return ret;
     Vec v = 1/c*Vec{a.p^(a.p+a.v), b.p^(b.p+b.v)};
     ret.push_back({v*Vec{-b.v.x, a.v.x},v*Vec{-b.v.y, a.v.y}});
     return ret;
+}
+
+std::vector<Point> inter(Seg s1, Seg s2) {
+    // 两线段的交点，没有交点返回空vector，否则返回一个大小为1的vector
+    // 这里特别规定，如果两条线段有重叠线段，会返回第一条线段的两个端点
+    std::vector<Point> ret;
+    using std::max;
+    using std::min;
+    bool check = true;
+    check = check && geq(max(s1.a.x, s1.b.x), min(s2.a.x, s2.b.x));
+    check = check && geq(max(s2.a.x, s2.b.x), min(s1.a.x, s1.b.x));
+    check = check && geq(max(s1.a.y, s1.b.y), min(s2.a.y, s2.b.y));
+    check = check && geq(max(s2.a.y, s2.b.y), min(s1.a.y, s1.b.y));
+    if (!check) return ret;
+
+    db pd1 = (s2.a - s1.a) ^ (s1.b - s1.a);
+    db pd2 = (s2.b - s1.a) ^ (s1.b - s1.a);
+    if (sgn(pd1 * pd2) == 1) return ret;
+    std::swap(s1, s2);  // 双方都要跨立实验
+    pd1 = (s2.a - s1.a) ^ (s1.b - s1.a);
+    pd2 = (s2.b - s1.a) ^ (s1.b - s1.a);
+    if (sgn(pd1 * pd2) == 1) return ret;
+
+    if (sgn(pd1) == 0 && sgn(pd2) == 0) {
+        ret.push_back(s2.a);
+        ret.push_back(s2.a);
+        return ret;
+    }
+    return inter(line(s2), line(s1));
 }
 
 std::vector<Point> inter(Line l, Circle c){
@@ -193,6 +238,52 @@ std::vector<Point> inter(Circle c1, Circle c2){
     Vec av = a/len(v1)*v1, hv = h/len(v2)*v2;
     ret.push_back(c1.o+av+hv);ret.push_back(c1.o+av-hv);
     return ret;
+}
+
+/////////////////////////////////////////////////
+//多边形相关
+
+db area(std::vector<Point> const & ps){
+    // 逆时针排序的多边形的顶点，计算面积
+    db ret = 0.0;
+    for(int i=0, sz=ps.size();i<sz;i++){
+        ret += (ps[i]^ps[(i+1)%sz])/2.0;
+    }
+    return ret;
+}
+
+bool isconvex(std::vector<Point> const & poly){
+    // 多边形是否为凸
+    std::vector<bool> s(3, false);
+    for(int i=0, n=poly.size();i<n;i++){
+        int j = (i+1)%n;
+        int k = (j+1)%n;
+        s[sgn((poly[j]-poly[i])^(poly[k]-poly[i]))+1] = true;
+        if(s[0] && s[2]) return false;
+    }
+    return true;
+}
+
+int inpoly(std::vector<Point> const & poly, Point p){
+    // 一个点是否在多边形内？
+    // 0外部，1内部，2边上，3顶点上
+    int n=poly.size();
+    for(int i=0;i<n;i++){
+        if(poly[i]==p) return 3;
+    }
+    for(int i=0;i<n;i++){
+        if(on(p, Seg{poly[(i+1)%n],poly[i]})) return 2;
+    }
+    int cnt = 0;
+    for(int i=0;i<n;i++){
+         int j = (i+1)%n;
+         int k = sgn((p-poly[j])^(poly[i]-poly[j]));
+         int u = sgn(poly[i].y-p.y);
+         int v = sgn(poly[j].y-p.y);
+         if(k>0 && u<0 && v>=0) cnt++;
+         if(k<0 && v<0 && u>=0) cnt--;
+    }
+    return cnt != 0;
 }
 
 /////////////////////////////////////////////////
